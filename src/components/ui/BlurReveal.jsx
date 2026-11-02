@@ -5,8 +5,8 @@ export function BlurReveal({
   children,
   className = '',
   delay = 0,
-  speedReveal = 1.2,
-  speedSegment = 0.5,
+  speedReveal = 1.1,
+  speedSegment = 0.65,
   trigger = true,
   onAnimationComplete,
   onAnimationStart,
@@ -16,7 +16,7 @@ export function BlurReveal({
 }) {
   const ref = useRef(null)
   const isReduced = useReducedMotion()
-  const isElementInView = useInView(ref, { once: true, margin: '-8% 0px' })
+  const isElementInView = useInView(ref, { once: true, margin: '-10% 0px' })
   const shouldAnimate = inView ? isElementInView && trigger : trigger
 
   // Check if children is a string to split by words
@@ -30,7 +30,7 @@ export function BlurReveal({
       transition: isReduced
         ? { duration: 0 }
         : {
-            staggerChildren: Math.max(0.02, speedReveal / (words.length * 2.5)),
+            staggerChildren: Math.max(0.025, speedReveal / (words.length * 2.2)),
             delayChildren: delay,
           },
     },
@@ -41,8 +41,8 @@ export function BlurReveal({
       ? { opacity: 1, filter: 'blur(0px)', y: 0 }
       : {
           opacity: 0,
-          filter: 'blur(8px)',
-          y: 10,
+          filter: 'blur(10px)',
+          y: 14,
         },
     visible: {
       opacity: 1,
@@ -67,7 +67,7 @@ export function BlurReveal({
       animate={shouldAnimate ? 'visible' : 'hidden'}
       onAnimationStart={onAnimationStart}
       onAnimationComplete={onAnimationComplete}
-      className={`block ${className}`}
+      className={`block break-words ${className}`}
       style={style}
     >
       {isString

@@ -2,6 +2,7 @@ import { useState, useCallback } from 'react'
 import { SplashScreen } from './components/SplashScreen'
 import { Hero } from './components/Hero'
 import { Services } from './components/Services'
+import { ProcessTimeline } from './components/ProcessTimeline'
 import { CtaSection } from './components/CtaSection'
 import { FloatingWhatsApp } from './components/FloatingWhatsApp'
 import { FooterMinimal } from './components/FooterMinimal'
@@ -22,8 +23,9 @@ export function App() {
 
       {/* 2. Main Editorial Content */}
       <main className="relative z-10 w-full">
-        <Hero />
+        <Hero isReady={loadingFinished} />
         <Services />
+        <ProcessTimeline />
         <CtaSection />
         <FooterMinimal />
       </main>
