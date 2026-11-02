@@ -1,7 +1,5 @@
 import { ArrowUpRight, MessageCircle } from 'lucide-react'
-import { ShinyText } from './ui/ShinyText'
-import { RevealItem } from './ui/ScrollReveal'
-import { AppleScrollRevealText } from './ui/AppleScrollRevealText'
+import { BlurReveal } from './ui/BlurReveal'
 
 export function CtaSection({
   whatsappNumber = '5511999999999',
@@ -10,47 +8,48 @@ export function CtaSection({
   const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(defaultMessage)}`
 
   return (
-    <section className="relative w-full max-w-6xl mx-auto px-6 py-32 border-t border-white/10 overflow-hidden">
-      <div className="flex flex-col items-start">
-        {/* Technical Label */}
-        <RevealItem delay={0.1}>
-          <span className="font-mono text-xs uppercase tracking-widest text-zinc-500 mb-6 block">
-            [04 // INICIE A TRANSIÇÃO]
-          </span>
-        </RevealItem>
-
-        {/* Fluid Mega Headline with ShinyText */}
-        <RevealItem delay={0.2}>
-          <h2 className="font-['Clash_Display'] text-[clamp(2.5rem,7vw,6.5rem)] font-bold leading-none tracking-tighter text-white uppercase mb-8">
-            Pronto para Dominar <br className="hidden md:block" />
-            <ShinyText text="Sua Região?" speed={2.5} />
-          </h2>
-        </RevealItem>
-
-        {/* Apple Scroll Reveal Narrative */}
-        <div className="max-w-2xl mb-12">
-          <AppleScrollRevealText
-            text="Enquanto você lê esta frase, centenas de potenciais clientes na sua cidade estão escolhendo o seu concorrente simplesmente porque ele aparece primeiro no Google Maps com fotos profissionais e um site impecável. Vamos mudar essa realidade hoje."
-            className="font-sans text-base sm:text-lg md:text-xl font-light text-zinc-400 leading-relaxed"
-          />
-        </div>
-
-        {/* High-Conversion Luxury CTA Button with Shiny Sheen */}
-        <RevealItem delay={0.4}>
-          <a
-            href={whatsappUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            data-cursor-interactive
-            className="group relative inline-flex items-center gap-4 rounded-full border border-white/20 bg-white px-8 py-5 text-black shadow-2xl transition-all duration-500 hover:scale-105 hover:bg-zinc-200 active:scale-95"
+    <section id="contato" className="relative w-full border-b border-rule bg-paper-2 proof py-24 sm:py-32">
+      <div className="container mx-auto px-4 sm:px-8 max-w-6xl">
+        <div className="crop bg-paper border border-rule p-8 sm:p-12 md:p-16 max-w-4xl mx-auto shadow-sheet">
+          {/* Headline */}
+          <BlurReveal
+            as="h2"
+            inView={true}
+            delay={0.1}
+            speedReveal={1.1}
+            className="font-display text-3xl sm:text-4xl md:text-5xl font-normal text-ink leading-tight tracking-[-0.022em] mb-6"
           >
-            <MessageCircle className="h-5 w-5 fill-black stroke-black" />
-            <span className="font-['Clash_Display'] text-base md:text-lg font-bold tracking-tight uppercase">
-              Falar com um Estrategista
+            Pronto para dominar a sua região?
+          </BlurReveal>
+
+          {/* Narrative */}
+          <BlurReveal
+            as="p"
+            inView={true}
+            delay={0.25}
+            speedReveal={1.3}
+            className="font-body text-base sm:text-lg text-ink-2 leading-relaxed mb-8 max-w-2xl font-normal"
+          >
+            Enquanto você lê esta frase, centenas de potenciais clientes na sua cidade estão escolhendo o seu concorrente simplesmente porque ele aparece primeiro no Google Maps com fotos profissionais e um site impecável. Vamos mudar essa realidade hoje.
+          </BlurReveal>
+
+          {/* Action button */}
+          <div className="flex flex-wrap items-center gap-4">
+            <a
+              href={whatsappUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-3 bg-accent text-accent-ink px-8 py-4 text-base font-medium rounded-sm border border-ink/20 shadow-sm transition-transform duration-200 hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-focus cursor-pointer"
+            >
+              <MessageCircle className="h-5 w-5" />
+              <span>Falar com um estrategista</span>
+              <ArrowUpRight className="h-4 w-4" />
+            </a>
+            <span className="text-xs text-muted">
+              Resposta em minutos no horário comercial
             </span>
-            <ArrowUpRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
-          </a>
-        </RevealItem>
+          </div>
+        </div>
       </div>
     </section>
   )

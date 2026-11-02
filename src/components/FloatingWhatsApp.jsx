@@ -1,55 +1,46 @@
 import { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
 import { MessageCircle } from 'lucide-react'
+import { buildWhatsAppUrl, SITE_CONFIG } from '../config/site'
 
 export function FloatingWhatsApp({
-  phoneNumber = '5511999999999',
-  defaultMessage = 'Olá! Gostaria de entender como a Connecting pode posicionar meu negócio local no topo.',
+  phoneNumber,
+  defaultMessage = SITE_CONFIG.contact.defaultMessages.floating,
 }) {
   const [isHovered, setIsHovered] = useState(false)
-
-  const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(defaultMessage)}`
+  const whatsappUrl = buildWhatsAppUrl(phoneNumber, defaultMessage)
 
   return (
     <div className="fixed bottom-6 right-6 z-[90] flex items-center gap-3">
-      {/* Tooltip on hover */}
-      <AnimatePresence>
-        {isHovered && (
-          <motion.div
-            initial={{ opacity: 0, x: 10, scale: 0.95 }}
-            animate={{ opacity: 1, x: 0, scale: 1 }}
-            exit={{ opacity: 0, x: 10, scale: 0.95 }}
-            transition={{ duration: 0.2 }}
-            className="hidden sm:flex items-center rounded-lg border border-white/20 bg-zinc-950 px-3.5 py-1.5 shadow-2xl backdrop-blur-md"
-          >
-            <span className="font-mono text-xs text-white tracking-wide">
-              Falar com um Especialista
-            </span>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* Button with animated radar ring */}
-      <div className="relative flex items-center justify-center">
-        {/* Radar wave pulse 1 */}
-        <span className="absolute -inset-2.5 rounded-full bg-white/15 animate-ping pointer-events-none duration-1000" />
-        
-        {/* Radar wave pulse 2 */}
-        <span className="absolute -inset-1 rounded-full border border-white/30 animate-pulse pointer-events-none" />
-
-        <a
-          href={whatsappUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Falar no WhatsApp com a Connecting"
-          data-cursor-interactive
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
-          className="relative flex h-14 w-14 items-center justify-center rounded-full bg-white text-black shadow-2xl transition-all duration-300 hover:scale-110 hover:bg-zinc-200 active:scale-95"
+      {/* Tooltip on hover or focus */}
+      {isHovered && (
+        <div
+          role="tooltip"
+          id="whatsapp-tooltip"
+          className="hidden sm:flex items-center rounded-sm border border-rule bg-paper-hi px-3 py-1.5 shadow-sheet"
         >
-          <MessageCircle className="h-6 w-6 stroke-[2.2] fill-black" />
-        </a>
-      </div>
+          <span className="text-xs text-ink font-medium">
+            Falar com um especialista
+          </span>
+        </div>
+      )}
+
+      {/* Button */}
+      <a
+        href={whatsappUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Falar no WhatsApp com a Connecting"
+        aria-describedby={isHovered ? 'whatsapp-tooltip' : undefined}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+        onFocus={() => setIsHovered(true)}
+        onBlur={() => setIsHovered(false)}
+        className="relative flex h-13 w-13 items-center justify-center rounded-sm bg-accent text-accent-ink border border-ink/20 shadow-sheet transition-transform duration-200 hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-focus cursor-pointer"
+      >
+        <MessageCircle className="h-6 w-6 stroke-[2.2]" />
+      </a>
     </div>
   )
 }
+
+export default FloatingWhatsApp

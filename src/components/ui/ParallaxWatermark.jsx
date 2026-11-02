@@ -2,7 +2,7 @@ import { useRef } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 
 export function ParallaxWatermark({
-  text = 'DOMINANCE // AUTHORITY',
+  text = 'Connecting Studio',
   direction = 'left',
   speed = 120,
   className = '',
@@ -27,10 +27,12 @@ export function ParallaxWatermark({
     >
       <motion.div
         style={{ x: xTransform }}
-        className="whitespace-nowrap font-['Clash_Display'] text-[14vw] font-black uppercase tracking-tighter text-white/[0.03] will-change-transform leading-none"
+        className="whitespace-nowrap font-display text-[12vw] font-normal text-ink/[0.04] will-change-transform leading-none"
       >
         {text}
       </motion.div>
     </div>
   )
 }
+
+export default ParallaxWatermark

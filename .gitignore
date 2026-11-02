@@ -10,7 +10,13 @@ lerna-debug.log*
 node_modules
 dist
 dist-ssr
-*.local
+# Local environment and scratch files
+.env
+.env.*
+!.env.example
+.hallmark/
+test_*.mjs
+test_*.js
 
 # Editor directories and files
 .vscode/*

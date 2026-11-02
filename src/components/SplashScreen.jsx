@@ -1,16 +1,26 @@
 import { useEffect, useState, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
-export function SplashScreen({ is3DLoaded = false, onComplete }) {
+export function SplashScreen({ onComplete }) {
   const [progress, setProgress] = useState(0)
   const [isExiting, setIsExiting] = useState(false)
   const onCompleteRef = useRef(onComplete)
-  onCompleteRef.current = onComplete
+  useEffect(() => {
+    onCompleteRef.current = onComplete
+  }, [onComplete])
 
   useEffect(() => {
-    const duration = is3DLoaded ? 1400 : 2200 // Max 2.2s total, never infinite
+    // If reduced motion is preferred, complete immediately
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      onCompleteRef.current?.()
+      return
+    }
+
+    const duration = 800
     const startTime = performance.now()
     let rafId = 0
+    let timeoutExitId = 0
+    let timeoutCompleteId = 0
 
     const update = (now) => {
       const elapsed = now - startTime
@@ -20,18 +30,22 @@ export function SplashScreen({ is3DLoaded = false, onComplete }) {
       if (current < 100) {
         rafId = requestAnimationFrame(update)
       } else {
-        setTimeout(() => {
+        timeoutExitId = setTimeout(() => {
           setIsExiting(true)
-          setTimeout(() => {
+          timeoutCompleteId = setTimeout(() => {
             onCompleteRef.current?.()
-          }, 600)
-        }, 200)
+          }, 300)
+        }, 120)
       }
     }
 
     rafId = requestAnimationFrame(update)
-    return () => cancelAnimationFrame(rafId)
-  }, [is3DLoaded])
+    return () => {
+      cancelAnimationFrame(rafId)
+      clearTimeout(timeoutExitId)
+      clearTimeout(timeoutCompleteId)
+    }
+  }, [])
 
   return (
     <AnimatePresence>
@@ -41,52 +55,31 @@ export function SplashScreen({ is3DLoaded = false, onComplete }) {
           initial={{ opacity: 1 }}
           exit={{
             opacity: 0,
-            y: -20,
-            filter: 'blur(16px)',
-            transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] },
+            transition: { duration: 0.3, ease: [0.16, 1, 0.3, 1] },
           }}
-          className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-[#09090B] px-6 select-none"
+          className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-paper px-6 select-none"
         >
-          {/* Subtle geometric background grid */}
-          <div className="absolute inset-0 bg-[radial-gradient(#27272a_1px,transparent_1px)] [background-size:24px_24px] opacity-25" />
+          {/* Studio dot grid background */}
+          <div className="absolute inset-0 proof opacity-40 pointer-events-none" />
 
-          <div className="relative flex flex-col items-center">
-            {/* Minimalist Geometric Ring Loader */}
-            <div className="relative mb-8 flex h-20 w-20 items-center justify-center">
-              <motion.div
-                className="absolute inset-0 rounded-full border border-white/10"
-                animate={{ rotate: 360 }}
-                transition={{ duration: 6, repeat: Infinity, ease: 'linear' }}
-              />
-              <motion.div
-                className="absolute inset-1 rounded-full border-t border-r border-white/80"
-                animate={{ rotate: 360 }}
-                transition={{ duration: 1.6, repeat: Infinity, ease: 'linear' }}
-              />
-              <span className="font-mono text-xs tracking-wider text-zinc-400">
+          <div className="relative flex flex-col items-center crop p-8 bg-paper border border-rule">
+            {/* Minimalist Studio Metric Ring Loader */}
+            <div className="relative mb-6 flex h-16 w-16 items-center justify-center">
+              <div className="absolute inset-0 rounded-full border border-rule" />
+              <div className="absolute inset-0 rounded-full border-t-2 border-accent animate-spin" />
+              <span className="font-body text-xs font-medium text-ink num">
                 {progress}%
               </span>
             </div>
 
-            {/* Brand reveal with tracking letter spacing */}
-            <motion.h1
-              initial={{ letterSpacing: '0.5em', opacity: 0 }}
-              animate={{ letterSpacing: '0.18em', opacity: 1 }}
-              transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-              className="font-['Clash_Display'] text-3xl md:text-5xl font-bold uppercase tracking-[0.18em] text-white"
-            >
+            {/* Brand in Studio theme typography */}
+            <h1 className="font-display text-4xl font-normal text-ink">
               Connecting
-            </motion.h1>
+            </h1>
 
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3, duration: 0.8 }}
-              className="mt-3 flex items-center gap-2 font-mono text-[11px] tracking-widest text-zinc-500 uppercase"
-            >
-              <span className="h-1.5 w-1.5 rounded-full bg-white animate-pulse" />
-              Digital Performance &bull; Local Authority
-            </motion.div>
+            <div className="mt-2 flex items-center gap-2 text-xs text-muted">
+              <span>Presença digital e autoridade local</span>
+            </div>
           </div>
         </motion.div>
       )}

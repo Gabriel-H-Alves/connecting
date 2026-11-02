@@ -1,16 +1,39 @@
 import { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
 import { CheckCircle2, XCircle, Star } from 'lucide-react'
-import { TiltedCard } from './ui/TiltedCard'
-import { RevealStagger, RevealChild } from './ui/ScrollReveal'
 
 const COMPARISONS = [
   {
-    id: 'gmaps',
-    tabName: 'Google Meu Negócio',
+    id: 'website',
+    tabName: 'Landing pages, sites e sistemas',
     before: {
       tag: 'Antes da Connecting',
-      status: 'Invisível e Amador',
+      status: 'Perdendo vendas diárias',
+      score: 'Carregamento: 4.8s (Lento)',
+      views: 'Taxa de conversão: < 0.5%',
+      issues: [
+        'Sem página própria ou layout travado no celular',
+        'Site lento em plataformas genéricas que espanta clientes',
+        'Nenhum botão direto ou estratégico para o WhatsApp',
+      ],
+    },
+    after: {
+      tag: 'Depois da Connecting',
+      status: 'Máquina de conversão e agendamentos',
+      score: 'Carregamento: 0.5s (99+ no Google PageSpeed)',
+      views: 'Taxa de conversão: 14.8%',
+      features: [
+        'Landing page e sistemas desenvolvidos sob medida em React',
+        '100% otimizada para compras e agendamentos no celular',
+        'Botões de WhatsApp estratégicos convertendo em 1 clique',
+      ],
+    },
+  },
+  {
+    id: 'gmaps',
+    tabName: 'Google Meu Negócio e Maps',
+    before: {
+      tag: 'Antes da Connecting',
+      status: 'Invisível e amador',
       score: '3.4 ★ (12 avaliações)',
       views: '~140 visualizações/mês',
       issues: [
@@ -21,39 +44,13 @@ const COMPARISONS = [
     },
     after: {
       tag: 'Depois da Connecting',
-      status: 'Top 1 & Autoridade Local',
+      status: 'Top 1 e autoridade local',
       score: '4.9 ★ (180+ avaliações reais)',
       views: '+3.200 visualizações/mês',
       features: [
         'Ensaio fotográfico profissional do local e produtos',
         'Otimização completa de palavras-chave locais',
         'Fluxo automatizado de avaliações 5 estrelas',
-      ],
-    },
-  },
-  {
-    id: 'website',
-    tabName: 'Website & Conversão',
-    before: {
-      tag: 'Antes da Connecting',
-      status: 'Perdendo Vendas Diárias',
-      score: 'Carregamento: 4.8s (Lento)',
-      views: 'Taxa de conversão: < 0.5%',
-      issues: [
-        'Sem página própria ou link para PDF confuso',
-        'Layout quebrado e ilegível no celular',
-        'Nenhum botão direto para o WhatsApp',
-      ],
-    },
-    after: {
-      tag: 'Depois da Connecting',
-      status: 'Máquina de Agendamentos',
-      score: 'Carregamento: 0.6s (Instantâneo)',
-      views: 'Taxa de conversão: 14.8%',
-      features: [
-        'Landing page ultra rápida e persuasiva',
-        '100% otimizada para compras pelo celular',
-        'Botões de WhatsApp estratégicos com mensagens prontas',
       ],
     },
   },
@@ -65,17 +62,25 @@ export function BeforeAfterComparison() {
 
   return (
     <div className="w-full">
-      {/* Switcher Tabs with buttery micro-interaction */}
-      <div className="flex justify-center gap-3 mb-10">
+      {/* Switcher Tabs */}
+      <div
+        role="tablist"
+        aria-label="Comparativo antes e depois da Connecting"
+        className="flex items-center gap-2 mb-8 border-b border-rule pb-4"
+      >
         {COMPARISONS.map((comp, idx) => (
           <button
             key={comp.id}
-            data-cursor-interactive
+            id={`tab-${comp.id}`}
+            role="tab"
+            aria-selected={activeTab === idx}
+            aria-controls={`panel-${comp.id}`}
+            type="button"
             onClick={() => setActiveTab(idx)}
-            className={`cursor-pointer rounded-full px-5 py-2 font-mono text-xs uppercase tracking-wider transition-all duration-300 ${
+            className={`cursor-pointer px-4 py-2 text-xs font-medium rounded-sm border transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-focus ${
               activeTab === idx
-                ? 'bg-white text-black font-bold shadow-lg shadow-white/10 scale-105'
-                : 'border border-white/10 text-zinc-400 hover:border-white/30 hover:text-white'
+                ? 'bg-ink text-paper border-ink'
+                : 'bg-paper-2 text-ink-2 border-rule hover:bg-paper-3 hover:text-ink'
             }`}
           >
             {comp.tabName}
@@ -83,94 +88,94 @@ export function BeforeAfterComparison() {
         ))}
       </div>
 
-      {/* Side-by-side Before & After with React Bits TiltedCard */}
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={current.id}
-          initial={{ opacity: 0, y: 24, filter: 'blur(8px)' }}
-          animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-          exit={{ opacity: 0, y: -24, filter: 'blur(8px)' }}
-          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          className="grid grid-cols-1 md:grid-cols-2 gap-6"
-        >
-          {/* BEFORE CARD WITH TILTED CARD */}
-          <TiltedCard rotateAmplitude={10} className="h-full">
-            <RevealStagger stagger={0.08}>
-              <RevealChild className="flex items-center justify-between mb-4">
-                <span className="font-mono text-xs text-zinc-500 uppercase tracking-wider">
-                  {current.before.tag}
-                </span>
-                <span className="rounded-full bg-zinc-900 border border-zinc-800 px-3 py-1 font-mono text-[11px] text-zinc-400">
-                  Sem autoridade
-                </span>
-              </RevealChild>
+      {/* Side-by-side Before and After Cards */}
+      <div
+        role="tabpanel"
+        id={`panel-${current.id}`}
+        aria-labelledby={`tab-${current.id}`}
+        className="grid grid-cols-1 md:grid-cols-2 gap-8"
+      >
+        {/* BEFORE CARD */}
+        <div className="crop bg-paper-2 border border-rule p-6 sm:p-8 flex flex-col justify-between">
+          <div>
+            <div className="flex items-center justify-between mb-4 pb-3 border-b border-rule/60 text-xs">
+              <span className="text-muted font-normal">
+                {current.before.tag}
+              </span>
+              <span className="px-2 py-0.5 rounded-sm bg-paper-3 text-muted border border-rule text-xs">
+                Sem autoridade
+              </span>
+            </div>
 
-              <RevealChild>
-                <h4 className="font-['Clash_Display'] text-xl font-semibold text-zinc-300">
-                  {current.before.status}
-                </h4>
-              </RevealChild>
+            <h4 className="font-display text-xl sm:text-2xl font-normal text-ink mb-4">
+              {current.before.status}
+            </h4>
 
-              <RevealChild className="my-6 flex h-40 w-full flex-col items-center justify-center rounded-xl border border-dashed border-zinc-800 bg-zinc-900/40 p-4 text-center">
-                <div className="font-mono text-xs text-zinc-500 mb-1">{current.before.score}</div>
-                <div className="text-zinc-600 text-xs">{current.before.views}</div>
-                <div className="mt-3 text-[10px] text-zinc-600 font-mono tracking-widest uppercase">
-                  [Área reservada: Imagem Antes]
-                </div>
-              </RevealChild>
-
-              <div className="space-y-3">
-                {current.before.issues.map((issue, idx) => (
-                  <RevealChild key={idx} className="flex items-start gap-2.5 text-xs text-zinc-400">
-                    <XCircle className="h-4 w-4 text-zinc-600 shrink-0 mt-0.5" />
-                    <span>{issue}</span>
-                  </RevealChild>
-                ))}
+            <div className="my-6 p-4 rounded-sm border border-dashed border-rule bg-paper-3/50 text-center">
+              <div className="text-xs text-ink-2 font-medium mb-1 num">
+                {current.before.score}
               </div>
-            </RevealStagger>
-          </TiltedCard>
-
-          {/* AFTER CARD WITH TILTED CARD */}
-          <TiltedCard rotateAmplitude={10} className="h-full">
-            <RevealStagger stagger={0.08}>
-              <RevealChild className="flex items-center justify-between mb-4">
-                <span className="font-mono text-xs text-white uppercase tracking-wider font-semibold">
-                  {current.after.tag}
-                </span>
-                <span className="rounded-full bg-white text-black px-3 py-1 font-mono text-[11px] font-bold">
-                  Alta Conversão
-                </span>
-              </RevealChild>
-
-              <RevealChild>
-                <h4 className="font-['Clash_Display'] text-xl font-semibold text-white">
-                  {current.after.status}
-                </h4>
-              </RevealChild>
-
-              <RevealChild className="my-6 flex h-40 w-full flex-col items-center justify-center rounded-xl border border-white/20 bg-zinc-950 p-4 text-center shadow-inner">
-                <div className="flex items-center gap-1 text-white font-mono text-sm font-semibold mb-1">
-                  <Star className="h-4 w-4 fill-white text-white" />
-                  {current.after.score}
-                </div>
-                <div className="text-zinc-300 text-xs font-mono">{current.after.views}</div>
-                <div className="mt-3 text-[10px] text-zinc-400 font-mono tracking-widest uppercase">
-                  [Área reservada: Imagem Depois - Alta Definição]
-                </div>
-              </RevealChild>
-
-              <div className="space-y-3">
-                {current.after.features.map((feature, idx) => (
-                  <RevealChild key={idx} className="flex items-start gap-2.5 text-xs text-zinc-200">
-                    <CheckCircle2 className="h-4 w-4 text-white shrink-0 mt-0.5" />
-                    <span>{feature}</span>
-                  </RevealChild>
-                ))}
+              <div className="text-xs text-muted num">
+                {current.before.views}
               </div>
-            </RevealStagger>
-          </TiltedCard>
-        </motion.div>
-      </AnimatePresence>
+              <div className="mt-2 text-xs text-muted">
+                Registro inicial sem calibração
+              </div>
+            </div>
+
+            <div className="space-y-3">
+              {current.before.issues.map((issue, idx) => (
+                <div key={idx} className="flex items-start gap-2.5 text-xs text-ink-2">
+                  <XCircle className="h-4 w-4 text-muted shrink-0 mt-0.5" />
+                  <span>{issue}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* AFTER CARD */}
+        <div className="crop bg-paper-hi border border-rule p-6 sm:p-8 flex flex-col justify-between shadow-sheet">
+          <div>
+            <div className="flex items-center justify-between mb-4 pb-3 border-b border-rule text-xs">
+              <span className="text-ink font-medium">
+                {current.after.tag}
+              </span>
+              <span className="px-2 py-0.5 rounded-sm bg-accent text-accent-ink font-medium text-xs">
+                Alta conversão
+              </span>
+            </div>
+
+            <h4 className="font-display text-xl sm:text-2xl font-normal text-ink mb-4">
+              {current.after.status}
+            </h4>
+
+            <div className="my-6 p-4 rounded-sm border border-rule bg-paper-2 text-center">
+              <div className="flex items-center justify-center gap-1.5 text-sm font-semibold text-ink mb-1 num">
+                <Star className="h-4 w-4 fill-accent text-accent" />
+                <span>{current.after.score}</span>
+              </div>
+              <div className="text-xs text-ink-2 font-medium num">
+                {current.after.views}
+              </div>
+              <div className="mt-2 text-xs text-muted">
+                Padrão de autoridade territorial consolidado
+              </div>
+            </div>
+
+            <div className="space-y-3">
+              {current.after.features.map((feature, idx) => (
+                <div key={idx} className="flex items-start gap-2.5 text-xs text-ink">
+                  <CheckCircle2 className="h-4 w-4 text-accent shrink-0 mt-0.5" />
+                  <span>{feature}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   )
 }
+
+export default BeforeAfterComparison

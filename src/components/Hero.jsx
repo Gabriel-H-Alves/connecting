@@ -1,140 +1,158 @@
-import { motion } from 'framer-motion'
-import { ArrowDownRight } from 'lucide-react'
-import { SpotlightBackground } from './ui/SpotlightBackground'
-import { TextPressure } from './ui/TextPressure'
-import { InteractivePillar } from './ui/InteractivePillar'
-import { Hero3DObject } from './ui/Hero3DObject'
-
-const APPLE_EASE = [0.16, 1, 0.3, 1]
+import { ArrowDown, ArrowUpRight } from 'lucide-react'
+import { ThemeToggle } from './ThemeToggle'
+import { BlurReveal } from './ui/BlurReveal'
 
 const TOPICS = [
   {
     code: '01',
-    tag: 'LOCAL SEO & MAPS',
-    title: 'Domínio no Google Maps',
-    description: 'Algoritmos territoriais calibrados para colocar seu negócio no Top 1 das buscas da região.',
-    alignment: 'self-start md:ml-6 lg:ml-12',
+    tag: 'Web e Sistemas',
+    title: 'Landing pages e sistemas sob medida',
+    description: 'Arquiteturas ultrarrápidas em React sem CMS genérico, convertendo visitantes em agendamentos diretos.',
   },
   {
     code: '02',
-    tag: 'ULTRA PERFORMANCE',
-    title: 'Sites de Alta Performance',
-    description: 'Arquiteturas ultrarrápidas sem CMS genérico, convertendo cliques em mensagens diretas.',
-    alignment: 'self-start md:self-end md:mr-8 lg:mr-20',
+    tag: 'Local SEO e Maps',
+    title: 'Domínio no Google Maps',
+    description: 'Algoritmos territoriais calibrados para colocar seu negócio no topo das buscas da região.',
   },
   {
     code: '03',
-    tag: 'VISUAL ASSETS',
-    title: 'Atualização Visual Premium',
+    tag: 'Ativos visuais',
+    title: 'Atualização visual premium',
     description: 'Fotografia e identidade visual de alto padrão para aniquilar qualquer amadorismo.',
-    alignment: 'self-start md:ml-16 lg:ml-32',
   },
 ]
 
-export function Hero({ isReady = true, on3DReady }) {
+export function Hero({ isReady: _isReady = true, on3DReady: _on3DReady }) {
+  const whatsappUrl = `https://wa.me/5511999999999?text=${encodeURIComponent('Olá! Quero transformar a presença digital e o faturamento do meu negócio com a Connecting.')}`
+
   return (
-    <SpotlightBackground className="relative min-h-screen w-full overflow-hidden flex flex-col justify-between px-4 sm:px-8 py-8 md:py-10">
-      {/* 3D Spline Interactive Object (Positioned on the Right / Center-back) */}
-      <Hero3DObject
-        onReady={on3DReady}
-        className="top-1/2 -translate-y-1/2 right-0 md:-right-8 w-full md:w-[58vw] h-[75vh] md:h-[90vh] opacity-65 md:opacity-90"
-      />
+    <section className="relative w-full border-b border-rule proof pt-6 pb-16 md:pt-8 md:pb-24">
+      <div className="container mx-auto px-4 sm:px-8 max-w-6xl">
+        {/* Navigation Header */}
+        <header className="flex items-center justify-between gap-4 border-b border-rule pb-4">
+            <a href="#" className="flex items-center gap-2.5 text-ink hover:text-accent transition-colors duration-200">
+              <img src="/favicon.svg" alt="Connecting" className="h-6 w-6 rounded-xs" width="24" height="24" />
+              <span className="font-display text-xl font-normal tracking-[-0.02em]">Connecting</span>
+            </a>
 
-      {/* 1. Asymmetric Editorial Meta Header (Z-10, Pointer-Events Auto) */}
-      <motion.div
-        initial={{ opacity: 0, y: -16, filter: 'blur(8px)' }}
-        animate={{ opacity: isReady ? 1 : 0, y: isReady ? 0 : -16, filter: isReady ? 'blur(0px)' : 'blur(8px)' }}
-        transition={{ duration: 1.2, ease: APPLE_EASE }}
-        className="relative z-10 w-full flex items-center justify-between border-b border-white/10 pb-4 font-mono text-[10px] sm:text-[11px] text-zinc-500 uppercase tracking-widest pointer-events-auto"
-      >
-        <div className="flex items-center gap-2.5">
-          <span className="h-1.5 w-1.5 rounded-full bg-white animate-ping" />
-          <span className="text-zinc-200 font-medium">CONNECTING // PROTOCOL 01</span>
-        </div>
-        <div className="hidden sm:flex items-center gap-6 text-zinc-500">
-          <span>PRESENÇA TERRITORIAL</span>
-          <span className="text-zinc-700">&bull;</span>
-          <span>ESTRUTURA ANTI-TEMPLATE</span>
-        </div>
-      </motion.div>
+            <nav className="hidden md:flex items-center gap-6 text-xs text-ink-2">
+              <a href="#servicos" className="hover:text-ink transition-colors duration-200">
+                Serviços
+              </a>
+              <a href="#comparativo" className="hover:text-ink transition-colors duration-200">
+                Comparativo
+              </a>
+              <a href="#contato" className="hover:text-ink transition-colors duration-200">
+                Contato
+              </a>
+            </nav>
 
-      {/* 2. Dominant Reactive Typography (Relative Z-10, Pointer-Events Auto) */}
-      <div className="relative z-10 my-auto w-full py-6 md:py-12 overflow-hidden pointer-events-auto">
-        <div className="w-full max-w-7xl mx-auto px-1 sm:px-2">
-          <TextPressure
-            text="CONNECTING"
-            fontFamily="'Clash Display', -apple-system, sans-serif"
-            textColor="#FFFFFF"
-            minFontSize={32}
-            radius={0.35}
-            className="w-full"
-          />
+            <div className="flex items-center gap-3">
+              <ThemeToggle />
+              <a
+                href={whatsappUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-sm bg-accent text-accent-ink hover:opacity-95 transition-opacity duration-200 focus-visible:outline-2 focus-visible:outline-focus cursor-pointer"
+              >
+                <span>WhatsApp</span>
+                <ArrowUpRight className="h-3.5 w-3.5" />
+              </a>
+            </div>
+        </header>
+
+        {/* Hero Main Ledge Posture */}
+        <div className="mt-12 md:mt-16 grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+          {/* Headline & Core Action Block */}
+          <div className="lg:col-span-7 flex flex-col items-start">
+            <BlurReveal
+              as="h1"
+              inView={false}
+              delay={0.1}
+              speedReveal={1.0}
+              className="font-display text-4xl sm:text-5xl lg:text-6xl text-ink font-normal leading-[1.05] tracking-[-0.022em]"
+            >
+              Domínio digital para negócios locais.
+            </BlurReveal>
+
+            <BlurReveal
+              as="p"
+              inView={false}
+              delay={0.35}
+              speedReveal={1.2}
+              className="mt-6 text-base sm:text-lg text-ink-2 leading-relaxed max-w-xl font-normal"
+            >
+              Posicionamento de autoridade eliminando perfis invisíveis, fotos ruins e sites lentos.
+            </BlurReveal>
+
+            <div className="mt-8 flex flex-wrap items-center gap-4">
+              <a
+                href={whatsappUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 bg-accent text-accent-ink px-6 py-3.5 text-sm font-medium rounded-sm border border-ink/20 shadow-sm transition-transform duration-200 hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-focus cursor-pointer"
+              >
+                <span>Falar com um estrategista</span>
+                <ArrowUpRight className="h-4 w-4" />
+              </a>
+              <a
+                href="#servicos"
+                className="inline-flex items-center gap-2 bg-paper-2 text-ink px-6 py-3.5 text-sm font-medium rounded-sm border border-rule transition-colors duration-200 hover:bg-paper-3 focus-visible:outline-2 focus-visible:outline-focus cursor-pointer"
+              >
+                <span>Conhecer os pilares</span>
+                <ArrowDown className="h-4 w-4" />
+              </a>
+            </div>
+          </div>
+
+          {/* Proof Sheet Card: The 3 Core Pillars */}
+          <div className="lg:col-span-5 w-full">
+            <div className="crop bg-paper-2 border border-rule p-6 sm:p-8">
+              <div className="flex items-center justify-between border-b border-rule pb-3 text-xs text-muted mb-6">
+                <span className="font-medium text-ink">Pilares de conversão</span>
+                <span className="num">3 entregáveis</span>
+              </div>
+
+              <div className="space-y-6">
+                {TOPICS.map((topic) => (
+                  <div key={topic.code} className="border-b border-rule/60 pb-5 last:border-b-0 last:pb-0">
+                    <div className="flex items-baseline justify-between gap-2 mb-1.5">
+                      <span className="text-xs font-medium text-accent num">{topic.code}</span>
+                      <span className="text-xs text-muted">{topic.tag}</span>
+                    </div>
+                    <h3 className="font-display text-lg font-normal text-ink mb-1">
+                      {topic.title}
+                    </h3>
+                    <p className="text-xs sm:text-sm text-ink-2 leading-relaxed">
+                      {topic.description}
+                    </p>
+                  </div>
+                ))}
+              </div>
+
+              <div className="mt-6 pt-4 border-t border-rule flex items-center justify-between text-xs text-muted">
+                <span>Metodologia comprovada</span>
+                <span className="text-ink font-medium num">99+ no Google PageSpeed</span>
+              </div>
+            </div>
+          </div>
         </div>
 
-        {/* Asymmetrical Editorial Sub-label */}
-        <motion.div
-          initial={{ opacity: 0, y: 20, filter: 'blur(8px)' }}
-          animate={{ opacity: isReady ? 1 : 0, y: isReady ? 0 : 20, filter: isReady ? 'blur(0px)' : 'blur(8px)' }}
-          transition={{ duration: 1.2, ease: APPLE_EASE, delay: 0.3 }}
-          className="mt-3 flex flex-col md:flex-row items-start md:items-baseline justify-between max-w-6xl mx-auto px-2 sm:px-4 gap-4"
-        >
-          <span className="font-mono text-xs text-zinc-500 tracking-wider">
-            [00 // METRO LOCAL DOMINANCE]
-          </span>
-          <p className="max-w-md font-sans text-xs sm:text-sm text-zinc-400 font-light leading-relaxed">
-            Eliminamos perfis invisíveis, fotos ruins e sites lentos.<br className="hidden md:block" />
-            Posicionamento de autoridade para quem lidera o mercado local.
-          </p>
-        </motion.div>
+        {/* Hero Bottom Strip */}
+        <div className="mt-16 pt-6 border-t border-rule flex flex-wrap items-center justify-between gap-4 text-xs text-muted">
+          <div>
+            <span>Fundada em 2026</span>
+            <span className="mx-2 text-rule">/</span>
+            <span>São Paulo, Brasil</span>
+          </div>
+          <div className="flex items-center gap-2 text-ink-2">
+            <span>Role para comparar resultados</span>
+            <ArrowDown className="h-3.5 w-3.5 text-accent" />
+          </div>
+        </div>
       </div>
-
-      {/* 3. The 3 Mysterious Asymmetric Interactive Pillars (Relative Z-10) */}
-      <div className="relative z-10 w-full max-w-6xl mx-auto flex flex-col gap-5 md:gap-3 my-4 sm:my-6 pointer-events-auto">
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: isReady ? 1 : 0 }}
-          transition={{ delay: 0.5, duration: 1 }}
-          className="flex items-center gap-2 font-mono text-[10px] tracking-widest text-zinc-600 uppercase mb-1 px-2"
-        >
-          <span>// PASSE O MOUSE SOBRE OS PILARES PARA FOCO REAL</span>
-        </motion.div>
-
-        {TOPICS.map((topic, index) => (
-          <motion.div
-            key={topic.code}
-            initial={{ opacity: 0, y: 35, filter: 'blur(10px)' }}
-            animate={{ opacity: isReady ? 1 : 0, y: isReady ? 0 : 35, filter: isReady ? 'blur(0px)' : 'blur(10px)' }}
-            transition={{
-              duration: 1.2,
-              ease: APPLE_EASE,
-              delay: 0.6 + index * 0.14,
-            }}
-            className={topic.alignment}
-          >
-            <InteractivePillar
-              code={topic.code}
-              tag={topic.tag}
-              title={topic.title}
-              description={topic.description}
-            />
-          </motion.div>
-        ))}
-      </div>
-
-      {/* 4. Bottom Scroll Cue */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: isReady ? 1 : 0 }}
-        transition={{ delay: 1, duration: 1.2, ease: APPLE_EASE }}
-        className="relative z-10 w-full flex items-center justify-between border-t border-white/10 pt-4 font-mono text-[10px] text-zinc-500 uppercase tracking-widest pointer-events-auto"
-      >
-        <span>EST. 2026 &bull; SÃO PAULO &bull; BRASIL</span>
-        <div className="flex items-center gap-2 text-zinc-400">
-          <span>SCROLL PARA DESCOBRIR</span>
-          <ArrowDownRight className="h-3.5 w-3.5 animate-bounce" />
-        </div>
-      </motion.div>
-    </SpotlightBackground>
+    </section>
   )
 }
 
